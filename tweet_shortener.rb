@@ -1,5 +1,5 @@
 require 'pry'
-def dictionary(str)
+def dictionary
   words = {
     "hello" => 'hi',
     "to" => '2',
@@ -14,17 +14,33 @@ def dictionary(str)
   }
 end
 
-
-def word_substituter(str_1 = "Hey guys, can anyone teach me how to be cool? I really want to be the best at everything, you know what I mean? Tweeting is super fun you guys!!!!")
-  array = str_1.split()
-  new_array = array.map do |element|
-    dictionary.each do |key, value|
-        element = value if (element == key)
+def word_substituter(tweet)
+  array = tweet.split()
+  array = array.map do |ele|
+    if dictionary.keys.include?(ele.downcase)
+      ele = dictionary[ele.downcase]
+    else
+      ele = ele
     end
   end
 
-  new_array.join(" ")
-  binding.pry
+  return array.join(" ")
 end
 
-word_substituter()
+def bulk_tweet_shortener(tweets_array)
+  tweets_array.each do |tweet|
+    puts word_substituter(tweet)
+  end
+end
+
+def selective_tweet_shortener(tweet)
+  return word_substituter(tweet) if tweet.size > 140
+  tweet
+end
+
+def shortened_tweet_truncator(tweet)
+  tweet = word_substituter(tweet)
+
+  return tweet = "#{tweet[0..136]}..." if tweet.size > 140
+  tweet
+end
